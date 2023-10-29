@@ -1,0 +1,124 @@
+﻿<!--@using CameraShop.Models.Models.ViewModels;
+@model ProductViewModel
+@{
+    ViewData["Title"] = "Upsert";
+    var title = "Create Product";
+}
+
+<h1>Upsert</h1>
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <div class="border row p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if(Model.Prd.Id != 0)
+        {
+        title = "Edit Product";
+        <input type="hidden" asp-for="Prd.Id" />
+        }
+        <h2 class="text-primary">@title</h2>
+    </div>
+    <div class="row border p-3 form-group">
+        <div class="form-group">
+            <div class="col-4">
+                <label asp-for="Prd.Name" class="form-label mt-4"></label>
+            </div>
+            <div class="col-4">
+                <input asp-for="Prd.Name" type="text" class="form-control" placeholder="Product">
+                <span asp-validation-for="Prd.Name" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+                <label asp-for="Prd.Description" class="form-label mt-4"></label>
+            </div>
+            <div class="col-4">
+                <textarea asp-for="Prd.Description" id="content" type="text" class="form-control"
+                          placeholder="Product Description" cols="4" rows="4"></textarea>
+                <span asp-validation-for="Prd.Description" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+                <label asp-for="Prd.ListPrice" class="form-label mt-4"></label>
+            </div>
+            <div class="col-4">
+                <input asp-for="Prd.ListPrice" type="number" value="" class="form-control">
+                <span asp-validation-for="Prd.ListPrice" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+                <label asp-for="Prd.Price" class="form-label mt-4"></label>
+            </div>
+            <div class="col-4">
+                <input asp-for="Prd.Price" type="number" value="" class="form-control">
+                <span asp-validation-for="Prd.Price" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+                <label asp-for="Prd.Price500" class="form-label mt-4"></label>
+            </div>
+            <div class="col-4">
+                <input asp-for="Prd.Price500" type="number" value="" class="form-control">
+                <span asp-validation-for="Prd.Price500" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+                <label asp-for="Prd.Price10000" class="form-label mt-4"></label>
+            </div>
+            <div class="col-4">
+                <input asp-for="Prd.Price10000" type="number" value="" class="form-control">
+                <span asp-validation-for="Prd.Price10000" class="text-danger"></span>
+            </div>
+
+            <div class="col-4">
+                <label asp-for="CategoryList" class="form-label mt-4"></label>
+            </div>
+            <div class="col-4">
+                @Html.DropDownListFor(c => c.Prd.CategoryId, (IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+                    )Model.CategoryList,
+                    "- Select Category", new {@class="form-control"})
+                    <span asp-validation-for="CategoryList" class="text-danger"></span>
+            </div>
+            @* <div class="col-4">
+                Image
+            </div>
+            <div class="col-4">
+                <input type="file" id="uploadBox" class="form-control">
+                <span asp-validation-for="Prd.ImgURL" class="text-danger"></span>
+            </div> *@
+
+        </div>
+        <div class="form-group row">
+            <div class="mt-4">
+                @if (Model.Prd.Id != 0)
+                {
+                <partial name="_EditAndBackToListButtons.cshtml" model="Model.Prd.Id" />
+                }
+                else
+                {
+                <div class="row d-flex justify-content-between">
+                    <div>
+                        <button type="submit" onclick="return validateInput()" class="btn btn-primary btn-lg">Create</button>
+                        <a asp-action="Index" class="btn btn-info btn-lg">Back To List</a>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+<script src="~/lib/tinymce/tinymce.min.js"></script>
+
+<script src="~/js/ProductScripts.js"></script>
+
+<script>
+        tinymce.init({
+            selector: 'textare#content',
+            plugins: 'lists',
+            menubar: 'file edit format'
+        });
+
+        function validateInput() {
+            if (document.getElementById('uploadBox').value == "") {
+                swal("Error", "Select Image", "error");
+                return false
+            }
+            return true;
+        }
+</script>
+}-->

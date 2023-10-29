@@ -1,0 +1,104 @@
+﻿@model ProductViewModel
+@{
+    ViewData["Title"] = "Upsert";
+    var title = "Create Product";
+}
+
+<h1>Upsert</h1>
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+    <div class="border row p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if(Model.Id != 0)
+        {
+            //Edit Partial View
+            title = "Edit Product";
+        }
+        <h2 class="text-primary">@title</h2>
+    </div>
+    <div class="row border p-3 form-group">
+        <div class="form-group">
+            <div class="col-4">
+                <label asp-for="Name" class="form-label mt-4"></label>
+            </div>
+            <div class="col-8">
+                <input asp-for="Name" type="text" class="form-control" placeholder="Product">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+                <label asp-for="Description" class="form-label mt-4"></label>
+            </div>
+            <div class="col-8">
+                <textarea asp-for="Description" type="text" class="form-control" placeholder="Description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+                <label asp-for="CategoryId" class="form-label mt-4"></label>
+            </div>
+            <div class="col-8">
+                @Html.DropDownListFor(p => p.CategoryId, (IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+                )Model.CategoryList, "- Select Category", new {@class="form-control"})
+                <span asp-validation-for="CategoryList" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+                <label asp-for="ListPrice" class="form-label mt-4"></label>
+            </div>
+            <div class="col-8">
+                <input asp-for="ListPrice" type="text" class="form-control" type="number">
+                <span asp-validation-for="ListPrice" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+                <label asp-for="Price" class="form-label mt-4"></label>
+            </div>
+            <div class="col-8">
+                <input asp-for="Price" type="text" class="form-control" type="number">
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+                <label asp-for="Price500" class="form-label mt-4"></label>
+            </div>
+            <div class="col-8">
+                <input asp-for="Price500" type="text" class="form-control" type="number">
+                <span asp-validation-for="Price500" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+                <label asp-for="Price10000" class="form-label mt-4"></label>
+            </div>
+            <div class="col-8">
+                <input asp-for="Price10000" type="text" class="form-control" type="number">
+                <span asp-validation-for="Price10000" class="text-danger"></span>
+            </div>
+            <div class="col-4">
+            Image
+            </div>
+            <div class="col-4">
+            <input asp-for="ImgURL" type="file" id="uploadBox" class="form-control">
+            <span asp-validation-for="ImgURL" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="mt-4">
+                @if (Model.Id != 0)
+                {
+                    <div>
+                        <button type="submit" class="btn btn-primary btn-lg" asp-route-id="@Model">Update</button>
+                        <a asp-action="Index" class="btn btn-info btn-lg">Back To List</a>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <button type="submit"  class="btn btn-primary btn-lg">Create</button>
+                        <a asp-action="Index" class="btn btn-info btn-lg">Back To List</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+    <script src="~/js/productscripts.js"></script>
+}

@@ -1,0 +1,67 @@
+* {
+    font-family: 'Chakra Petch', sans-serif;
+}
+
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+
+
+/* Basic table styling */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.table-info thead th {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #3a87ad;
+}
+
+.table-info tbody + tbody {
+    border-color: #bce8f1;
+}
+
+.table-info .table-bordered {
+    border: 1px solid #bce8f1;
+}
+
+
+
+
+#tblData_wrapper {
+    margin-top: 20px;
+}
+
+#tblData_filter input {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#tblData_length select {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
