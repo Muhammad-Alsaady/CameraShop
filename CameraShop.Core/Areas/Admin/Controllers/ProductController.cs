@@ -2,12 +2,14 @@
 using CameraShop.DataAccess.Repository.IRepository;
 using CameraShop.Models.Models;
 using CameraShop.Models.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.IO;
 namespace CameraShop.Core.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = $"{SD.Role_Admin}, {SD.Role_Employee}")]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork unitOfWork;

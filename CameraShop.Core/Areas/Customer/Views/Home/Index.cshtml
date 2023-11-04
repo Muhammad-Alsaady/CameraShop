@@ -1,8 +1,34 @@
-﻿@{
+﻿@model IEnumerable<CameraShop.Models.Models.Product>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row pb-3 bg-white">
+    @foreach(var prd in Model)
+    {
+        <div class=" col-lg-3 col-md-6">
+            <div class="row p-2">
+                <div class="col-12 p-1 " style="border:1px solid #008CBA; border-radius: 5px;">
+
+                    <div class="card">
+                        <img src=@($"/images/products/{prd.ImgURL}") class="card-img-top rounded" />
+                        <div style="padding-left: 5px;">
+                            <p class="card-title h5"><b style="color: #2c3e50">@prd.Name</b></p>
+                        </div>
+                        <div style="padding-left: 5px;">
+                            <p>List Price:<strike><b></b>$@prd.Price.ToString("0.0")</strike></p>
+                        </div>
+                        <div style="padding-left: 5px;">
+                            <p style="color: maroon">As low as:<b>$@prd.Price10000.ToString("0.0")</b></p>
+                        </div>
+                        <div class="pb-2" style="padding-left: 5px;">
+                            <a class="btn btn-primary form-control" asp-action="Details" asp-route-id="@prd.Id">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    
 </div>

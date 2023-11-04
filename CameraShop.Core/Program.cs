@@ -1,20 +1,50 @@
 using CameraShop.DataAccess;
 using CameraShop.DataAccess.Repository;
 using CameraShop.DataAccess.Repository.IRepository;
+using CameraShop.Models.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")??
         throw new InvalidOperationException("No DB connection is stablished");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+
+builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("AdminPolicy", policy => policy.RequireRole(SD.Role_Admin));
+    });
+
+
+builder.Services.AddAuthentication().AddFacebook(fbOptions =>
+        {
+            fbOptions.AppId = builder.Configuration.GetSection("FacebookSettings").GetValue<string>("AppId");
+            fbOptions.AppSecret = builder.Configuration.GetSection("FacebookSettings").GetValue<string>("AppSecret");
+        });
+
+builder.Services.AddAuthentication().AddGoogle(GOptions =>
+{
+    GOptions.ClientId = builder.Configuration.GetSection("GoogleSettings").GetValue<string>("ClientId");
+    GOptions.ClientSecret = builder.Configuration.GetSection("GoogleSettings").GetValue<string>("ClientSecret");
+});
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultUI()
+    .AddDefaultTokenProviders();
+
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddRazorPages();
+
+
 builder.Services.AddControllersWithViews();
 
 

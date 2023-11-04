@@ -1,0 +1,150 @@
+﻿@model IEnumerable<ApplicationUser>
+
+@{
+    ViewData["Title"] = "Index";
+    var today = DateTime.Today;
+    var MList = Model.ToList();
+}
+<link href="~/lib/datatables/css/datatable-bootstrap.min" rel="stylesheet" />
+<link href="~/lib/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+<link href="~/lib/datatables/css/datatables.bootstrap4.min.css" rel="stylesheet" />
+<link href="~/lib/datatables/css/datatables.foundation.min.css" rel="stylesheet" />
+<link href="~/lib/datatables/css/datatables.jqueryui.min.css" rel="stylesheet" />
+<link href="~/lib/datatables/css/datatables.material.min.css" rel="stylesheet" />
+<link href="~/lib/datatables/css/datatables.semanticui.min.css" rel="stylesheet" />
+<link href="~/lib/datatables/css/datatables.uikit.min.css" rel="stylesheet" />
+<link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+<link href="~/lib/datatables/css/jquery.datatables_themeroller.min.css" rel="stylesheet" />
+<h1>Index</h1>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <h2 class="text-primary">Category List</h2>
+    </div>
+    <div class="col-md-6 text-right">
+        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register"><i class="bi bi-plus-circle-dotted">&nbsp;Create new User</i></a>
+    </div>
+</div>
+
+<table id="tblData" class="display">
+    <thead class="bg-dark text-white">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model._Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < MList.Count(); i++)
+        {
+        <tr>
+            <td>
+                 @Html.DisplayFor(modelItem => MList[i]._Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => MList[i].Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => MList[i].PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => MList[i].Company.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => MList[i].Role)
+            </td>
+            <td class="Lock" id="Lock_@i" data-LockoutEnd="@MList[i].LockoutEnd" data-user-id="@MList[i].Id">
+                // To DO
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+@section Scripts{
+    <script src="~/lib/datatables/js/datatables.bootstrap.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.datatables.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.foundation.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.jqueryui.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.material.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.semanticui.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.uikit.min.js"></script>
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="~/lib/datatable/js/datatable.min.js"></script>
+    <script>
+        var dataTable;
+        $(document).ready(function () {
+            loadDataTable();
+            
+        });
+
+        function loadDataTable() {
+            dataTable = $('#tblData').dataTable();
+            $(' [id^="Lock_"]').each(function () {
+                var id = $(this).data('user-id');
+                var today = new Date().getTime();
+                var lockout = $(this).getAttribute('data-LockoutEnd');
+                var date_LockoutEnd = Date.parse($(this).data('LockoutEnd'));
+                console.log(id, today, lockout, date_LockoutEnd);
+
+            });
+            // $('td[id^="Lock_"]').each(function () {
+            //     var id = $(this).data('user-id')
+            //     var today = new Date().getTime();
+            //     var date_LockoutEnd = Date.parse($(this).data('LockoutEnd'));
+            //     console.log(date_LockoutEnd)
+            //     var lock = document.getElementsByClassName('Lock');
+            //     var lockoutEnd = lock.getAttribute('data-LockoutEnd');
+            //     console.log(lockoutEnd);
+            //     lockoutEnd = new Date(lockoutEnd).getTime();
+            //     console.log(lockoutEnd);
+
+            //     var buttonHtml;
+            //     console.log(lockoutEnd > today);
+            //     if (lockoutEnd > today) {
+            //         buttonHtml = (`<div class="text-center"><a onclick="lockUnlock(\'' + id + '\')" class="btn btn-danger text-white"><i class="bi bi-unlock"> Unlock</a></div>`);
+            //     } else {
+            //         buttonHtml = (`<div class="text-center"><a onclick="lockUnlock(\'' + id + '\')" class="btn btn-success text-white"><i class="bi bi-lock"> Lock</a></div>`);
+
+            //     }
+            //     $(this).append(buttonHtml);
+            // });
+        }
+        function lockUnlock(id) {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/User/LockUnlock",
+                data: JSON.stringify(id),
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                }
+            })
+        }
+    </script>
+}
+

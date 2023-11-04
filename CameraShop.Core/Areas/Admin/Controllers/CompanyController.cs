@@ -8,13 +8,12 @@ using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 namespace CameraShop.Core.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = $"{SD.Role_Admin}, {SD.Role_Employee}")]
-
-    public class CategoryController : Controller
+    [Authorize(Roles = SD.Role_Admin)]
+    public class CompanyController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CompanyController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
@@ -29,8 +28,8 @@ namespace CameraShop.Core.Areas.Admin.Controllers
         {
            if(id == null)
             {
-                Category category = new Category();
-                return View(category);
+                Company Company = new Company();
+                return View(Company);
             }
            var item = await unitOfWork.Categories.Get(id.GetValueOrDefault());
             if(item == null)
@@ -42,14 +41,14 @@ namespace CameraShop.Core.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(Category model)
+        public async Task<IActionResult> Upsert(Company model)
         {
             if(ModelState.IsValid)
             {
                 if(model.Id == 0)
-                    unitOfWork.Categories.Add(model);
+                    unitOfWork.Companies.Add(model);
                 else
-                    await unitOfWork.Categories.Update(model);
+                    await unitOfWork.Companies.Update(model);
                 await unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
@@ -64,7 +63,7 @@ namespace CameraShop.Core.Areas.Admin.Controllers
         {
             try
             {
-                var items = unitOfWork.Categories.GetAll();
+                var items = unitOfWork.Companies.GetAll();
                 return Json(new { data = items });
             }
             catch (Exception ex)
@@ -79,10 +78,10 @@ namespace CameraShop.Core.Areas.Admin.Controllers
         {
             if (id == null)
                 return BadRequest();
-            var model = unitOfWork.Categories.Get(id.GetValueOrDefault());
+            var model = unitOfWork.Companies.Get(id.GetValueOrDefault());
             if (model == null)
                 return Json(new {success = false, message = "Somthing went wrong"});
-            unitOfWork.Categories.Remove(id.GetValueOrDefault());
+            unitOfWork.Companies.Remove(id.GetValueOrDefault());
             await unitOfWork.Save();
             return Json(new { success = true, message = "Successfuly Deleted"});
         }

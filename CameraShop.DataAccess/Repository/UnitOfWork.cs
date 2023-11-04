@@ -16,11 +16,15 @@ namespace CameraShop.DataAccess.Repository
             this.context = context;
             Categories = new CategoryRepository(context);
             Products = new ProductRepository(context);
+            Companies = new CompanyRepository(context);
+            AppUser = new UserRepository(context);
         }
 
         public ICategoryRepository Categories { get; private set; }
-
+        public ICompanyRepository Companies { get; private set; }
         public IProductRepository Products { get; private set; }
+        public IUserRepository AppUser { get; private set; }
+
 
         public void Dispose()
         {

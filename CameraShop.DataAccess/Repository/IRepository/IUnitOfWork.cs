@@ -10,6 +10,8 @@ namespace CameraShop.DataAccess.Repository.IRepository
     {
         ICategoryRepository Categories { get;}
         IProductRepository Products { get;}
+        ICompanyRepository Companies { get; }
+        IUserRepository AppUser { get; }
         Task Save();
     }
 }
